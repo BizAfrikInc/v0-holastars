@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://holastars.com
+
+# Sitemaps
+Sitemap: https://holastars.com/sitemap.xml

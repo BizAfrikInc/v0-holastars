@@ -1,0 +1,1 @@
+ALTER TABLE "hs_departments" ADD COLUMN "Description" varchar(255);
