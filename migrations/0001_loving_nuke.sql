@@ -1,0 +1,1 @@
+ALTER TABLE "hs_permissions" ADD PRIMARY KEY ("PermissionId");

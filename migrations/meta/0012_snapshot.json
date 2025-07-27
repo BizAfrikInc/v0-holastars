@@ -1,0 +1,1881 @@
+{
+  "id": "f5d9332a-caa4-47bc-a867-838a92a3d38d",
+  "prevId": "e69e0906-9b6e-4d05-b67f-51115fd4a95f",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.hs_businesses": {
+      "name": "hs_businesses",
+      "schema": "",
+      "columns": {
+        "BusinessId": {
+          "name": "BusinessId",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "userId": {
+          "name": "userId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Email": {
+          "name": "Email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "BusinessName": {
+          "name": "BusinessName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Created_At": {
+          "name": "Created_At",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "Updated_At": {
+          "name": "Updated_At",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "unique_business_email_idx": {
+          "name": "unique_business_email_idx",
+          "columns": [
+            {
+              "expression": "Email",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "unique_business_name_idx": {
+          "name": "unique_business_name_idx",
+          "columns": [
+            {
+              "expression": "BusinessName",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "fk_user_business_user_id": {
+          "name": "fk_user_business_user_id",
+          "tableFrom": "hs_businesses",
+          "tableTo": "hs_users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "UserId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.hs_customers": {
+      "name": "hs_customers",
+      "schema": "",
+      "columns": {
+        "CustomerId": {
+          "name": "CustomerId",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "BusinessId": {
+          "name": "BusinessId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "LocationId": {
+          "name": "LocationId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "DepartmentId": {
+          "name": "DepartmentId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "FirstName": {
+          "name": "FirstName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "LastName": {
+          "name": "LastName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Email": {
+          "name": "Email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Phone": {
+          "name": "Phone",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "CustomerStatus": {
+          "name": "CustomerStatus",
+          "type": "hs_customer_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'active'"
+        },
+        "CreatedAt": {
+          "name": "CreatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "UpdatedAt": {
+          "name": "UpdatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "unique_customer_email_business": {
+          "name": "unique_customer_email_business",
+          "columns": [
+            {
+              "expression": "BusinessId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "Email",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "fk_customers_business_id": {
+          "name": "fk_customers_business_id",
+          "tableFrom": "hs_customers",
+          "tableTo": "hs_businesses",
+          "columnsFrom": [
+            "BusinessId"
+          ],
+          "columnsTo": [
+            "BusinessId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "fk_customers_location_id": {
+          "name": "fk_customers_location_id",
+          "tableFrom": "hs_customers",
+          "tableTo": "hs_locations",
+          "columnsFrom": [
+            "LocationId"
+          ],
+          "columnsTo": [
+            "LocationId"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "fk_customers_department_id": {
+          "name": "fk_customers_department_id",
+          "tableFrom": "hs_customers",
+          "tableTo": "hs_departments",
+          "columnsFrom": [
+            "DepartmentId"
+          ],
+          "columnsTo": [
+            "DepartmentId"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.hs_departments": {
+      "name": "hs_departments",
+      "schema": "",
+      "columns": {
+        "DepartmentId": {
+          "name": "DepartmentId",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "LocationId": {
+          "name": "LocationId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Name": {
+          "name": "Name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Description": {
+          "name": "Description",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Created_At": {
+          "name": "Created_At",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "Updated_At": {
+          "name": "Updated_At",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_department_location_location_id": {
+          "name": "fk_department_location_location_id",
+          "tableFrom": "hs_departments",
+          "tableTo": "hs_locations",
+          "columnsFrom": [
+            "LocationId"
+          ],
+          "columnsTo": [
+            "LocationId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.hs_feedback_requests": {
+      "name": "hs_feedback_requests",
+      "schema": "",
+      "columns": {
+        "FeedbackRequestId": {
+          "name": "FeedbackRequestId",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "BusinessIdd": {
+          "name": "BusinessIdd",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "LocationId": {
+          "name": "LocationId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "DepartmentId": {
+          "name": "DepartmentId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Channel": {
+          "name": "Channel",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "TemplateId": {
+          "name": "TemplateId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "RequesterId": {
+          "name": "RequesterId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "feedback_req_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pending'"
+        },
+        "SentAt": {
+          "name": "SentAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "OpenedAt": {
+          "name": "OpenedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "CreatedAt": {
+          "name": "CreatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "UpdatedAt": {
+          "name": "UpdatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "hs_feedback_requests_BusinessIdd_hs_businesses_BusinessId_fk": {
+          "name": "hs_feedback_requests_BusinessIdd_hs_businesses_BusinessId_fk",
+          "tableFrom": "hs_feedback_requests",
+          "tableTo": "hs_businesses",
+          "columnsFrom": [
+            "BusinessIdd"
+          ],
+          "columnsTo": [
+            "BusinessId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "hs_feedback_requests_LocationId_hs_locations_LocationId_fk": {
+          "name": "hs_feedback_requests_LocationId_hs_locations_LocationId_fk",
+          "tableFrom": "hs_feedback_requests",
+          "tableTo": "hs_locations",
+          "columnsFrom": [
+            "LocationId"
+          ],
+          "columnsTo": [
+            "LocationId"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "hs_feedback_requests_DepartmentId_hs_departments_DepartmentId_fk": {
+          "name": "hs_feedback_requests_DepartmentId_hs_departments_DepartmentId_fk",
+          "tableFrom": "hs_feedback_requests",
+          "tableTo": "hs_departments",
+          "columnsFrom": [
+            "DepartmentId"
+          ],
+          "columnsTo": [
+            "DepartmentId"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "hs_feedback_requests_TemplateId_hs_feedback_templates_TemplateId_fk": {
+          "name": "hs_feedback_requests_TemplateId_hs_feedback_templates_TemplateId_fk",
+          "tableFrom": "hs_feedback_requests",
+          "tableTo": "hs_feedback_templates",
+          "columnsFrom": [
+            "TemplateId"
+          ],
+          "columnsTo": [
+            "TemplateId"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "hs_feedback_requests_RequesterId_hs_users_UserId_fk": {
+          "name": "hs_feedback_requests_RequesterId_hs_users_UserId_fk",
+          "tableFrom": "hs_feedback_requests",
+          "tableTo": "hs_users",
+          "columnsFrom": [
+            "RequesterId"
+          ],
+          "columnsTo": [
+            "UserId"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.hs_feedback_responses": {
+      "name": "hs_feedback_responses",
+      "schema": "",
+      "columns": {
+        "FeedbackResponseId": {
+          "name": "FeedbackResponseId",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "FeedbackRequestId": {
+          "name": "FeedbackRequestId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "CustomerId": {
+          "name": "CustomerId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "SubmittedAt": {
+          "name": "SubmittedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "CreatedAt": {
+          "name": "CreatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "UpdatedAt": {
+          "name": "UpdatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "hs_feedback_responses_FeedbackRequestId_hs_feedback_requests_FeedbackRequestId_fk": {
+          "name": "hs_feedback_responses_FeedbackRequestId_hs_feedback_requests_FeedbackRequestId_fk",
+          "tableFrom": "hs_feedback_responses",
+          "tableTo": "hs_feedback_requests",
+          "columnsFrom": [
+            "FeedbackRequestId"
+          ],
+          "columnsTo": [
+            "FeedbackRequestId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "hs_feedback_responses_CustomerId_hs_customers_CustomerId_fk": {
+          "name": "hs_feedback_responses_CustomerId_hs_customers_CustomerId_fk",
+          "tableFrom": "hs_feedback_responses",
+          "tableTo": "hs_customers",
+          "columnsFrom": [
+            "CustomerId"
+          ],
+          "columnsTo": [
+            "CustomerId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.hs_feedback_templates": {
+      "name": "hs_feedback_templates",
+      "schema": "",
+      "columns": {
+        "TemplateId": {
+          "name": "TemplateId",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "Name": {
+          "name": "Name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Channel": {
+          "name": "Channel",
+          "type": "hs_feedback_channel",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'email'"
+        },
+        "DisplayCompanyLogo": {
+          "name": "DisplayCompanyLogo",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "CompanyLogo": {
+          "name": "CompanyLogo",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "DisplayCompanyStatement": {
+          "name": "DisplayCompanyStatement",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "CompanyStatement": {
+          "name": "CompanyStatement",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "CreatedAt": {
+          "name": "CreatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "UpdatedAt": {
+          "name": "UpdatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.hs_locations": {
+      "name": "hs_locations",
+      "schema": "",
+      "columns": {
+        "LocationId": {
+          "name": "LocationId",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "BusinessId": {
+          "name": "BusinessId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Name": {
+          "name": "Name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Address": {
+          "name": "Address",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "PhoneNumber": {
+          "name": "PhoneNumber",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Email": {
+          "name": "Email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Created_At": {
+          "name": "Created_At",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "Updated_At": {
+          "name": "Updated_At",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "unique_location_address_idx": {
+          "name": "unique_location_address_idx",
+          "columns": [
+            {
+              "expression": "Address",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "fk_business_location_business_id": {
+          "name": "fk_business_location_business_id",
+          "tableFrom": "hs_locations",
+          "tableTo": "hs_businesses",
+          "columnsFrom": [
+            "BusinessId"
+          ],
+          "columnsTo": [
+            "BusinessId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.hs_permissions": {
+      "name": "hs_permissions",
+      "schema": "",
+      "columns": {
+        "PermissionId": {
+          "name": "PermissionId",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "Name": {
+          "name": "Name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Module": {
+          "name": "Module",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Action": {
+          "name": "Action",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Created_At": {
+          "name": "Created_At",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "Updated_At": {
+          "name": "Updated_At",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.plan_permissions": {
+      "name": "plan_permissions",
+      "schema": "",
+      "columns": {
+        "PlanPermissionId": {
+          "name": "PlanPermissionId",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "PlanId": {
+          "name": "PlanId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "PermissionId": {
+          "name": "PermissionId",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "CreatedAt": {
+          "name": "CreatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "UpdatedAt": {
+          "name": "UpdatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "unique_plan_permission": {
+          "name": "unique_plan_permission",
+          "columns": [
+            {
+              "expression": "PlanId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "PermissionId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "fk_planpermissions_plan_id": {
+          "name": "fk_planpermissions_plan_id",
+          "tableFrom": "plan_permissions",
+          "tableTo": "plans",
+          "columnsFrom": [
+            "PlanId"
+          ],
+          "columnsTo": [
+            "PlanId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "fk_planpermissions_permission_id": {
+          "name": "fk_planpermissions_permission_id",
+          "tableFrom": "plan_permissions",
+          "tableTo": "hs_permissions",
+          "columnsFrom": [
+            "PermissionId"
+          ],
+          "columnsTo": [
+            "PermissionId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.plans": {
+      "name": "plans",
+      "schema": "",
+      "columns": {
+        "PlanId": {
+          "name": "PlanId",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "Name": {
+          "name": "Name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Description": {
+          "name": "Description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Price": {
+          "name": "Price",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "BillingCycle": {
+          "name": "BillingCycle",
+          "type": "hs_billing_cycle",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "CreatedAt": {
+          "name": "CreatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "UpdatedAt": {
+          "name": "UpdatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "unique_plan_name": {
+          "name": "unique_plan_name",
+          "columns": [
+            {
+              "expression": "Name",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.hs_question_answers": {
+      "name": "hs_question_answers",
+      "schema": "",
+      "columns": {
+        "QuestionAnswerId": {
+          "name": "QuestionAnswerId",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "TemplateQuestionId": {
+          "name": "TemplateQuestionId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "CustomerId": {
+          "name": "CustomerId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "answer": {
+          "name": "answer",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "CreatedAt": {
+          "name": "CreatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "UpdatedAt": {
+          "name": "UpdatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_answers_customer": {
+          "name": "fk_answers_customer",
+          "tableFrom": "hs_question_answers",
+          "tableTo": "hs_customers",
+          "columnsFrom": [
+            "CustomerId"
+          ],
+          "columnsTo": [
+            "CustomerId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "fk_answers_template_question": {
+          "name": "fk_answers_template_question",
+          "tableFrom": "hs_question_answers",
+          "tableTo": "hs_template_questions",
+          "columnsFrom": [
+            "TemplateQuestionId"
+          ],
+          "columnsTo": [
+            "TemplateQuestionId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.hs_roles_permissions": {
+      "name": "hs_roles_permissions",
+      "schema": "",
+      "columns": {
+        "RolePermissionId": {
+          "name": "RolePermissionId",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "RoleId": {
+          "name": "RoleId",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "PermissionId": {
+          "name": "PermissionId",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Created_At": {
+          "name": "Created_At",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "Updated_At": {
+          "name": "Updated_At",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "unique_role_permission_idx": {
+          "name": "unique_role_permission_idx",
+          "columns": [
+            {
+              "expression": "RoleId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "PermissionId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "fk_role_permission_role_id": {
+          "name": "fk_role_permission_role_id",
+          "tableFrom": "hs_roles_permissions",
+          "tableTo": "hs_roles",
+          "columnsFrom": [
+            "RoleId"
+          ],
+          "columnsTo": [
+            "RoleId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "fk_role_permission_permission_id": {
+          "name": "fk_role_permission_permission_id",
+          "tableFrom": "hs_roles_permissions",
+          "tableTo": "hs_permissions",
+          "columnsFrom": [
+            "PermissionId"
+          ],
+          "columnsTo": [
+            "PermissionId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.hs_roles": {
+      "name": "hs_roles",
+      "schema": "",
+      "columns": {
+        "RoleId": {
+          "name": "RoleId",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "Name": {
+          "name": "Name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Created_At": {
+          "name": "Created_At",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "Updated_At": {
+          "name": "Updated_At",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.subscriptions": {
+      "name": "subscriptions",
+      "schema": "",
+      "columns": {
+        "SubscriptionId": {
+          "name": "SubscriptionId",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "UserPlanId": {
+          "name": "UserPlanId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "billing_cycle": {
+          "name": "billing_cycle",
+          "type": "billing_cycle",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "AmountPaid": {
+          "name": "AmountPaid",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "NextBillingDat": {
+          "name": "NextBillingDat",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "SubscriptionStatus": {
+          "name": "SubscriptionStatus",
+          "type": "hs_subscription_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "CharityContribution": {
+          "name": "CharityContribution",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "CreatedAt": {
+          "name": "CreatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "UpdatedAt": {
+          "name": "UpdatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "unique_user_plan_cycle": {
+          "name": "unique_user_plan_cycle",
+          "columns": [
+            {
+              "expression": "UserPlanId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "billing_cycle",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "fk_subscription_user_plan_id": {
+          "name": "fk_subscription_user_plan_id",
+          "tableFrom": "subscriptions",
+          "tableTo": "user_plans",
+          "columnsFrom": [
+            "UserPlanId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.hs_template_questions": {
+      "name": "hs_template_questions",
+      "schema": "",
+      "columns": {
+        "TemplateQuestionId": {
+          "name": "TemplateQuestionId",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "TemplateId": {
+          "name": "TemplateId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "QuestionNumber": {
+          "name": "QuestionNumber",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "QuestionText": {
+          "name": "QuestionText",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "FieldType": {
+          "name": "FieldType",
+          "type": "hs_input_types",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'input'"
+        },
+        "IsRequired": {
+          "name": "IsRequired",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "CreatedAt": {
+          "name": "CreatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "UpdatedAt": {
+          "name": "UpdatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_template_question_template_id": {
+          "name": "fk_template_question_template_id",
+          "tableFrom": "hs_template_questions",
+          "tableTo": "hs_feedback_templates",
+          "columnsFrom": [
+            "TemplateId"
+          ],
+          "columnsTo": [
+            "TemplateId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.hs_users_permissions": {
+      "name": "hs_users_permissions",
+      "schema": "",
+      "columns": {
+        "UserPermissionId": {
+          "name": "UserPermissionId",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "UserId": {
+          "name": "UserId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "PermissionId": {
+          "name": "PermissionId",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Granted": {
+          "name": "Granted",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "Created_AT": {
+          "name": "Created_AT",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "Updated_At": {
+          "name": "Updated_At",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "unique_user_permission_idx": {
+          "name": "unique_user_permission_idx",
+          "columns": [
+            {
+              "expression": "UserId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "PermissionId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "fk_user_permission_user_id": {
+          "name": "fk_user_permission_user_id",
+          "tableFrom": "hs_users_permissions",
+          "tableTo": "hs_users",
+          "columnsFrom": [
+            "UserId"
+          ],
+          "columnsTo": [
+            "UserId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "fk_user_permission_permission_id": {
+          "name": "fk_user_permission_permission_id",
+          "tableFrom": "hs_users_permissions",
+          "tableTo": "hs_permissions",
+          "columnsFrom": [
+            "PermissionId"
+          ],
+          "columnsTo": [
+            "PermissionId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.user_plans": {
+      "name": "user_plans",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "plan_id": {
+          "name": "plan_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "unique_user_plan": {
+          "name": "unique_user_plan",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "plan_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "fk_user_plans_user_id": {
+          "name": "fk_user_plans_user_id",
+          "tableFrom": "user_plans",
+          "tableTo": "hs_users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "UserId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_user_plans_plan_id": {
+          "name": "fk_user_plans_plan_id",
+          "tableFrom": "user_plans",
+          "tableTo": "plans",
+          "columnsFrom": [
+            "plan_id"
+          ],
+          "columnsTo": [
+            "PlanId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.hs_users_roles": {
+      "name": "hs_users_roles",
+      "schema": "",
+      "columns": {
+        "UserRoleId": {
+          "name": "UserRoleId",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "UserId": {
+          "name": "UserId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "RoleId": {
+          "name": "RoleId",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Created_At": {
+          "name": "Created_At",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "Updated_At": {
+          "name": "Updated_At",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "unique_user_role_idx": {
+          "name": "unique_user_role_idx",
+          "columns": [
+            {
+              "expression": "UserId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "RoleId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "fk_user_role_user_id ": {
+          "name": "fk_user_role_user_id ",
+          "tableFrom": "hs_users_roles",
+          "tableTo": "hs_users",
+          "columnsFrom": [
+            "UserId"
+          ],
+          "columnsTo": [
+            "UserId"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "fk_user_role_role_id ": {
+          "name": "fk_user_role_role_id ",
+          "tableFrom": "hs_users_roles",
+          "tableTo": "hs_roles",
+          "columnsFrom": [
+            "RoleId"
+          ],
+          "columnsTo": [
+            "RoleId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.hs_users": {
+      "name": "hs_users",
+      "schema": "",
+      "columns": {
+        "UserId": {
+          "name": "UserId",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "Email": {
+          "name": "Email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "FirstName": {
+          "name": "FirstName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "LastName": {
+          "name": "LastName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Username": {
+          "name": "Username",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Image": {
+          "name": "Image",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Provider": {
+          "name": "Provider",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "PasswordHash": {
+          "name": "PasswordHash",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Status": {
+          "name": "Status",
+          "type": "hs_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'pending'"
+        },
+        "Created_At": {
+          "name": "Created_At",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "Updated_At": {
+          "name": "Updated_At",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "unique_email_idx": {
+          "name": "unique_email_idx",
+          "columns": [
+            {
+              "expression": "Email",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.hs_verification_tokens": {
+      "name": "hs_verification_tokens",
+      "schema": "",
+      "columns": {
+        "TokenId": {
+          "name": "TokenId",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "UserId": {
+          "name": "UserId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Token": {
+          "name": "Token",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Expires_At": {
+          "name": "Expires_At",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Created_At": {
+          "name": "Created_At",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_verification_tokens_user_id": {
+          "name": "fk_verification_tokens_user_id",
+          "tableFrom": "hs_verification_tokens",
+          "tableTo": "hs_users",
+          "columnsFrom": [
+            "UserId"
+          ],
+          "columnsTo": [
+            "UserId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.hs_customer_status": {
+      "name": "hs_customer_status",
+      "schema": "public",
+      "values": [
+        "active",
+        "inactive"
+      ]
+    },
+    "public.feedback_req_status": {
+      "name": "feedback_req_status",
+      "schema": "public",
+      "values": [
+        "pending",
+        "sent",
+        "failed",
+        "opened"
+      ]
+    },
+    "public.hs_feedback_channel": {
+      "name": "hs_feedback_channel",
+      "schema": "public",
+      "values": [
+        "email",
+        "sms",
+        "whatsapp"
+      ]
+    },
+    "public.hs_billing_cycle": {
+      "name": "hs_billing_cycle",
+      "schema": "public",
+      "values": [
+        "monthly",
+        "semi_annually",
+        "annually"
+      ]
+    },
+    "public.billing_cycle": {
+      "name": "billing_cycle",
+      "schema": "public",
+      "values": [
+        "monthly",
+        "semi_annually",
+        "annually"
+      ]
+    },
+    "public.hs_subscription_status": {
+      "name": "hs_subscription_status",
+      "schema": "public",
+      "values": [
+        "active",
+        "pending",
+        "canceled"
+      ]
+    },
+    "public.hs_input_types": {
+      "name": "hs_input_types",
+      "schema": "public",
+      "values": [
+        "input",
+        "textarea",
+        "radio",
+        "checkbox"
+      ]
+    },
+    "public.hs_status": {
+      "name": "hs_status",
+      "schema": "public",
+      "values": [
+        "active",
+        "inactive",
+        "pending"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
