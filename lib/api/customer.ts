@@ -17,5 +17,5 @@ export const CustomersApi = {
   delete: (id: string, signal?: AbortSignal): Promise<AxiosResponse<JsonResponse>> =>
   apiClient.delete(`/api/customers/${id}`, { signal }),
   fetchAll:  ()=>apiClient.get('/api/customers'),
-  fetchById:  async (id:string , signal ?: AbortSignal) => await apiClient.get(`/api/customer/${id}`, { signal }),
+  fetchById:  async (id:string , signal ?: AbortSignal) => await apiClient.get(`/api/customers/${id}`, { signal }),
 }

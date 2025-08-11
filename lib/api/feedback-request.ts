@@ -12,4 +12,6 @@ export const FeedbackRequestApi = {
     apiClient.delete(`/api/feedback-requests/${id}`, { signal }),
   fetchAll:  ()=>apiClient.get('/api/feedback-requests'),
   fetchById:  async (id:string , signal ?: AbortSignal) => await apiClient.get(`/api/feedback-requests/${id}`, { signal }),
+  fetchFeedbackRequestDetails:  async (id:string , signal ?: AbortSignal) => await apiClient.get(`/api/feedback-requests/details/${id}`, { signal }),
+
 }

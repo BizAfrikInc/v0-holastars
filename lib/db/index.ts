@@ -13,6 +13,7 @@ import { plans } from "@/lib/db/schema/plans"
 import { planPermissions } from "@/lib/db/schema/plans-permission"
 import { questionAnswers } from "@/lib/db/schema/question-answers"
 import { roles} from '@/lib/db/schema/roles';
+import { socialMediaConnections } from "@/lib/db/schema/social-media-connections"
 import { subscriptions } from "@/lib/db/schema/subscriptions"
 import { templateQuestions } from "@/lib/db/schema/template-questions"
 import { users} from "@/lib/db/schema/users"
@@ -41,6 +42,7 @@ type Schema = {
   questionAnswers: typeof questionAnswers;
   feedbackRequests: typeof feedbackRequests;
   feedbackResponses: typeof feedbackResponses;
+  socialMediaConnections: typeof socialMediaConnections
 };
 
 export const schema: Schema = {
@@ -62,6 +64,7 @@ export const schema: Schema = {
   questionAnswers,
   feedbackRequests,
   feedbackResponses,
+  socialMediaConnections,
 };
 
 

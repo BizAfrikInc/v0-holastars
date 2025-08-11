@@ -103,6 +103,7 @@ const FeedbackRequestWizard = ({ onComplete, customers, updateCustomers, templat
 
 
   const canProceed = () => {
+    console.log(currentStep, data)
     switch (currentStep) {
       case 1: return data.channel !== null;
       case 2: return data.templateId !== null;

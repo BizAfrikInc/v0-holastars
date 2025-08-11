@@ -4,8 +4,10 @@ import { FeedbackRequest, feedbackRequests, FeedbackRequestWithTemplate, NewFeed
 import { DatabaseError } from "@/lib/errors/db-errors";
 import { updateRequestSchema } from "@/lib/helpers/validation-types"
 import { BaseRepository } from "./base-repository";
+import { Business, businesses } from "../schema/businesses";
 import { FeedbackTemplate, feedbackTemplates } from "../schema/feedback-template";
 import { TemplateQuestion, templateQuestions } from "../schema/template-questions";
+import { FeedbackRequestDetails } from "../schema/feedback-requests";
 
 export class FeedbackRequestsRepository extends BaseRepository<FeedbackRequest> {
   tableName = 'hs_feedback_requests';
@@ -49,7 +51,6 @@ export class FeedbackRequestsRepository extends BaseRepository<FeedbackRequest> 
       this.handleError("create", e)
     }
   }
-
   async findById(id: string) {
     try {
       const [row] = await db.select().from(feedbackRequests).where(eq(feedbackRequests.id, id)).limit(1)
@@ -58,6 +59,57 @@ export class FeedbackRequestsRepository extends BaseRepository<FeedbackRequest> 
       this.handleError("Find By Id", e)
     }
   }
+
+
+async feedbackRequestDetails(id: string): Promise<FeedbackRequestDetails | undefined> {
+  try {
+    const [request] = await db
+      .select()
+      .from(feedbackRequests)
+      .where(eq(feedbackRequests.id, id))
+      .limit(1);
+
+    if (!request) return undefined;
+
+    let template: FeedbackTemplate | undefined;
+    let questions: TemplateQuestion[] | undefined;
+    let business: Business | undefined;
+
+    // Get the template
+    if (request.templateId) {
+      [template] = await db
+        .select()
+        .from(feedbackTemplates)
+        .where(eq(feedbackTemplates.id, request.templateId));
+
+      // Get template questions if template exists
+      if (template?.id) {
+        questions = await db
+          .select()
+          .from(templateQuestions)
+          .where(eq(templateQuestions.templateId, template.id));
+      }
+    }
+
+    // Get the business
+    if (request.businessId) {
+      [business] = await db
+        .select()
+        .from(businesses)
+        .where(eq(businesses.id, request.businessId));
+    }
+
+    return {
+      feedbackRequest: request,
+      feedbackTemplate: template,
+      templateQuestions: questions,
+      business,
+    };
+  } catch (e) {
+    this.handleError("findById", e);
+  }
+}
+
 
   async update(id: string, data: Partial<NewFeedbackRequest>): Promise<FeedbackRequest> {
     try {

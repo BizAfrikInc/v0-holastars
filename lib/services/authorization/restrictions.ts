@@ -43,7 +43,8 @@ async function checkToken(request: NextRequest): Promise<Response | null> {
     '/pricing',
     '/resources',
     '/affiliate',
-    '/features'
+    '/features',
+    '/feedback'
 
   ];
 

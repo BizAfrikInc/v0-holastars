@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
+import { NewFeedbackTemplate } from "@/lib/db/schema/feedback-template";
+import { TemplateQuestion } from "@/lib/db/schema/template-questions";
 import { CreateTemplateWithQuestionsDTO } from "@/lib/helpers/validation-types"
 import TemplateDetailsStep from "./TemplateDetailsStep";
 import TemplateQuestionsStep from "./TemplateQuestionsStep";
@@ -15,22 +17,7 @@ interface CreateTemplateModalProps {
   onSubmit: (templateData: CreateTemplateWithQuestionsDTO) => Promise<void>;
 }
 
-export interface TemplateData {
-  name: string;
-  channel: 'email' | 'sms' | 'whatsapp';
-  displayCompanyLogo: boolean;
-  companyLogo?: string;
-  displayCompanyStatement: boolean;
-  companyStatement?: string;
-}
 
-export interface TemplateQuestion {
-  identifier: string;
-  questionText: string;
-  inputFieldType: 'input' | 'textarea' | 'radio' | 'checkbox';
-  isRequired: boolean;
-  options?: string[];
-}
 
 const steps = [
   { id: 1, title: "Template Details", description: "Basic information about your template" },
@@ -40,7 +27,7 @@ const steps = [
 
 const CreateTemplateModal = ({ isOpen, onClose, onSubmit }: CreateTemplateModalProps) => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [templateData, setTemplateData] = useState<TemplateData>({
+  const [templateData, setTemplateData] = useState<NewFeedbackTemplate>({
     name: '',
     channel: 'email',
     displayCompanyLogo: false,
@@ -78,10 +65,10 @@ const CreateTemplateModal = ({ isOpen, onClose, onSubmit }: CreateTemplateModalP
     }
   };
 
-  type StepFormData = TemplateData | TemplateQuestion[];
+  type StepFormData = NewFeedbackTemplate | TemplateQuestion[];
   const handleStepSubmit = (data: StepFormData) => {
     if (currentStep === 1) {
-      const state = data as TemplateData
+      const state = data as NewFeedbackTemplate
       setTemplateData(state);
       handleNext();
     } else if (currentStep === 2) {
@@ -97,7 +84,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSubmit }: CreateTemplateModalP
     setIsSubmitting(true);
     try {
       const questionsPayload = questions.map((qn=>{
-        const {identifier, ...rest}  = qn
+        const {id, ...rest}  = qn
         return rest
       }))
       await onSubmit({ feedbackTemplate: templateData, feedbackTemplateQuestions: questionsPayload });

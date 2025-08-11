@@ -7,7 +7,7 @@ import {
   timestamp,
   uuid,
 } from "drizzle-orm/pg-core";
-import { businesses } from "@/lib/db/schema/businesses"
+import { Business, businesses } from "@/lib/db/schema/businesses"
 import { departments } from "@/lib/db/schema/departments"
 import { channelEnum, FeedbackTemplate, feedbackTemplates } from "@/lib/db/schema/feedback-template"
 import { locations } from "@/lib/db/schema/locations"
@@ -48,4 +48,11 @@ export type FeedbackRequest     = typeof feedbackRequests.$inferSelect;
 export type NewFeedbackRequest  = typeof feedbackRequests.$inferInsert;
 export type FeedbackRequestWithTemplate = FeedbackRequest & {
   template?: FeedbackTemplate & { questions: TemplateQuestion[] };
+};
+
+export type FeedbackRequestDetails = {
+  feedbackRequest: FeedbackRequest;
+  feedbackTemplate?: FeedbackTemplate;
+  templateQuestions?: TemplateQuestion[];
+  business?: Business;
 };

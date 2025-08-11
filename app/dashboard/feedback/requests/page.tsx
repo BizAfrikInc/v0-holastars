@@ -15,8 +15,8 @@ import { Customer } from "@/lib/db/schema/customers"
 import { FeedbackRequestWithTemplate } from "@/lib/db/schema/feedback-requests";
 import { FeedbackTemplateWithQuestions } from "@/lib/db/schema/feedback-template"
 import { LocationWithDepartments } from "@/lib/db/schema/locations"
-import { useAuthStore } from "@/store/authStore";
 import { EmailRequest } from "@/lib/services/emails/zeptomail/types"
+import { useAuthStore } from "@/store/authStore";
 
 const FeedbackRequests = () => {
   const [activeTab, setActiveTab] = useState("create");
@@ -154,7 +154,7 @@ const FeedbackRequests = () => {
       ],
       merge_info: {
         name: customer.customerName,
-        feedbackLink: "https://www.google.com",
+        feedbackLink: `${process.env.NEXT_PUBLIC_SITE_URL}/feedback/${requestId}/${customer.id}`,
         supportEmail: "info@holastars.com",
         businessName: registeredBusiness?.name || "Holastars Reputation Management System",
         rewardDescription: "Get a chance to win a single item from your purchase list free of delivery",

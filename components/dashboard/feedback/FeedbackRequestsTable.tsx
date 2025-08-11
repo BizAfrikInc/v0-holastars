@@ -35,14 +35,14 @@ const FeedbackRequestsTable = ({ requests, onSendRequest, updateFeedbackStatus, 
     if (!feedbackRequest) return;
     setSendingIds(prev => [...prev, requestId]);
     try {
-      const { successCount, failureCount } = await onSendRequest(requestId);
-      const confirmationMsg = `${successCount} out of ${successCount + failureCount} ${feedbackRequest.channel}${feedbackRequest.customerIds.length > 1 ? 's' : ''} sent out successfully`;
+      const {successCount, failureCount}  = await onSendRequest(requestId);
+      const confirmationMessage = `${successCount} out of ${successCount+failureCount} messages sent out successfully`
       toast({
         title: "Success",
-        description: confirmationMsg
+        description: `Feedback requests sent successfully!. ${confirmationMessage}`
       });
       updateFeedbackStatus(requestId);
-    } catch {
+  } catch  {
       toast({
         title: "Error",
         description: `Failed to send out ${feedbackRequest.channel}s`,
